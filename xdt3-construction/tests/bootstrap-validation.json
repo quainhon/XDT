@@ -1,0 +1,56 @@
+{
+  "schema_version": "0.1",
+  "job_id": "XDT3-CONSTRUCTION-BOOTSTRAP-V0-1-001",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "routing",
+      "result": "pass",
+      "evidence": "project xdt-construction -> owner XDT3-CONSTRUCTION -> quainhon/XDT:xdt3-construction/ -> XDT_BUILD"
+    },
+    {
+      "id": "xdt2-read-only",
+      "result": "pass",
+      "evidence": "Consumed xdt2-architect Build Plan/schema without mutation."
+    },
+    {
+      "id": "unauthorized-fail-closed",
+      "result": "pass",
+      "evidence": "BUILD-CANARY-QN-MARKET-001 has construction_authorized=false; refusal record mode=refused and no downstream dispatch."
+    },
+    {
+      "id": "scope-non-expansion",
+      "result": "pass",
+      "evidence": "Target owner/repo/path plus permitted and forbidden mutation scopes are explicit contract fields."
+    },
+    {
+      "id": "cross-owner-handoff",
+      "result": "pass",
+      "evidence": "execution_route supports handoff_to_owner; XDT3 ownership flag is explicit."
+    },
+    {
+      "id": "evidence-not-verification",
+      "result": "pass",
+      "evidence": "claims_are_verification is schema-const false; xdt4 verification_status is schema-const not_verified."
+    },
+    {
+      "id": "authorized-synthetic",
+      "result": "pass",
+      "evidence": "CONSTRUCTION-FIXTURE-XDT3-001 authorized=true, target confined to xdt3-construction/fixtures/, status=evidence_ready_for_xdt4."
+    },
+    {
+      "id": "protected-scopes-untouched",
+      "result": "pass",
+      "evidence": "All bootstrap commits created paths only under xdt3-construction/."
+    },
+    {
+      "id": "schema-shape",
+      "result": "pass",
+      "evidence": "Both proof records contain every required construction-record v0.1 field and enum/const values conform to the schema."
+    }
+  ],
+  "limitations": [
+    "Bootstrap proves contract/gating behavior with static machine-readable evidence; no real downstream implementation is authorized by this job.",
+    "XDT4 has not verified implementation evidence."
+  ]
+}
