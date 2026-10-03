@@ -1,0 +1,87 @@
+{
+  "schema_version": "0.1",
+  "verification_id": "QC-FIXTURE-PASS-001",
+  "build_plan_id": "BUILD-FIXTURE-XDT3-001",
+  "work_package_id": "WP-FIXTURE-XDT3-001",
+  "construction_evidence": {
+    "record_id": "CONSTRUCTION-FIXTURE-XDT3-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "xdt3-construction/fixtures/authorized-self.fixture.json",
+    "source_revision": "01f3d0e3cc2e5b26ac0d59ff546babe8086595d7",
+    "exists": true,
+    "authorized": true
+  },
+  "materials_contracts": [
+    {
+      "id": "xdt.build-plan",
+      "version": "0.1",
+      "proven": true
+    },
+    {
+      "id": "xdt.construction-record",
+      "version": "0.1",
+      "proven": true
+    }
+  ],
+  "target": {
+    "repository": "quainhon/XDT",
+    "path_scope": "xdt3-construction/fixtures/"
+  },
+  "authoritative_owner": "XDT3-CONSTRUCTION",
+  "acceptance_criteria": [
+    {
+      "id": "AC-FIX-001",
+      "criterion": "Authorization is true.",
+      "required_evidence": [
+        "construction authorization"
+      ],
+      "evidence": [
+        "authorization.construction_authorized=true"
+      ],
+      "result": "PROVEN"
+    },
+    {
+      "id": "AC-FIX-002",
+      "criterion": "Mutation scope remains XDT3-owned.",
+      "required_evidence": [
+        "target and owner"
+      ],
+      "evidence": [
+        "target path xdt3-construction/fixtures/; owner XDT3-CONSTRUCTION"
+      ],
+      "result": "PROVEN"
+    },
+    {
+      "id": "AC-FIX-003",
+      "criterion": "Evidence is explicitly not XDT4 verification.",
+      "required_evidence": [
+        "claims_are_verification"
+      ],
+      "evidence": [
+        "claims_are_verification=false"
+      ],
+      "result": "PROVEN"
+    }
+  ],
+  "scope_ownership_checks": {
+    "owner_resolved": true,
+    "target_within_authorized_scope": true,
+    "forbidden_scope_untouched": true,
+    "result": "PROVEN"
+  },
+  "provenance": [
+    "XDT3 authorized-self fixture",
+    "XDT4 bootstrap independent synthetic verification"
+  ],
+  "verdict": "PASS",
+  "findings": [],
+  "corrective_return": null,
+  "xdt5_handoff": {
+    "ready": true,
+    "successor_project": "xdt-launch",
+    "input_refs": [
+      "QC-FIXTURE-PASS-001",
+      "CONSTRUCTION-FIXTURE-XDT3-001"
+    ]
+  }
+}
