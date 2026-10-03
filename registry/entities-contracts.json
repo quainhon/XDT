@@ -1,0 +1,44 @@
+{
+  "schema_version": "0.1",
+  "contracts": [
+    {
+      "id": "xdt.material-request.v0.1",
+      "owner": "XDT1-MATERIAL",
+      "canonical_path": "schemas/material-request.schema.json",
+      "version": "0.1"
+    },
+    {
+      "id": "xdt.material-plan.v0.1",
+      "owner": "XDT1-MATERIAL",
+      "canonical_path": "schemas/material-plan.schema.json",
+      "version": "0.1"
+    },
+    {
+      "id": "qncc.telemetry-ingest-contract",
+      "owner": "TTQN3-QNCC",
+      "canonical_external": {
+        "repo": "quainhon/QNCC",
+        "path": "docs/QNCC_TELEMETRY_INGEST_CONTRACT.md",
+        "revision": "352120f054448d7ccf78f0d9a552ce0f89758dbe"
+      }
+    },
+    {
+      "id": "location-scout.scout-types",
+      "owner": "TTQN5-LOCATION-SCOUT",
+      "canonical_external": {
+        "repo": "quainhon/location-scouting",
+        "path": "src/types/scout.ts",
+        "revision": "7ba933a8b4df5523f6560362e57f9440421c8617"
+      }
+    },
+    {
+      "id": "qn-reel.organizer-models",
+      "owner": "TTQN4-REEL-CONTROL",
+      "canonical_external": {
+        "repo": "quainhon/QN-Reel-drive-organizer",
+        "path": "qn_reel_organizer/models.py",
+        "revision": "71c972f4306ca460c68e9dcaa6fc27fd885f7052"
+      }
+    }
+  ]
+}
