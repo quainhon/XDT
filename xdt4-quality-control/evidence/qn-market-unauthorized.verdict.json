@@ -1,0 +1,93 @@
+{
+  "schema_version": "0.1",
+  "verification_id": "QC-QN-MARKET-UNAUTHORIZED-001",
+  "build_plan_id": "BUILD-CANARY-QN-MARKET-001",
+  "work_package_id": "ALL-QN-MARKET-WORK-PACKAGES",
+  "construction_evidence": {
+    "record_id": "CONSTRUCTION-REFUSAL-QN-MARKET-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "xdt3-construction/evidence/qn-market-unauthorized.refusal.json",
+    "source_revision": "fd56ef4ca1ff43de01c532004a02f5657a359d40",
+    "exists": true,
+    "authorized": false
+  },
+  "materials_contracts": [
+    {
+      "id": "qn-market.marketplace-core-contract",
+      "version": "unresolved",
+      "proven": false
+    },
+    {
+      "id": "qn-market.cross-boat-reference-contract",
+      "version": "unresolved",
+      "proven": false
+    }
+  ],
+  "target": {
+    "repository": "UNAUTHORIZED",
+    "path_scope": "NONE"
+  },
+  "authoritative_owner": "UNRESOLVED",
+  "acceptance_criteria": [
+    {
+      "id": "AC-QNM-001",
+      "criterion": "Components consume only approved contracts.",
+      "required_evidence": [
+        "approved QN Market contracts"
+      ],
+      "evidence": [
+        "required contracts unresolved"
+      ],
+      "result": "UNPROVEN"
+    },
+    {
+      "id": "AC-QNM-003",
+      "criterion": "Core implementation only after required contracts are approved.",
+      "required_evidence": [
+        "contract approval",
+        "construction authorization"
+      ],
+      "evidence": [
+        "construction_authorized=false",
+        "XDT3 refused dispatch"
+      ],
+      "result": "PROVEN"
+    },
+    {
+      "id": "AC-QNM-005",
+      "criterion": "No construction begins while blocking decisions remain.",
+      "required_evidence": [
+        "refusal evidence"
+      ],
+      "evidence": [
+        "XDT3 status refused_unauthorized"
+      ],
+      "result": "PROVEN"
+    }
+  ],
+  "scope_ownership_checks": {
+    "owner_resolved": false,
+    "target_within_authorized_scope": false,
+    "forbidden_scope_untouched": true,
+    "result": "FAILED"
+  },
+  "provenance": [
+    "XDT2 BUILD-CANARY-QN-MARKET-001",
+    "XDT3 CONSTRUCTION-REFUSAL-QN-MARKET-001",
+    "XDT4 independent QC"
+  ],
+  "verdict": "FAIL",
+  "findings": [
+    "Construction authorization is false.",
+    "Authoritative implementation owner is unresolved.",
+    "Required shared contracts remain unresolved; launch certification is forbidden."
+  ],
+  "corrective_return": {
+    "to": "XDT3-CONSTRUCTION",
+    "required_actions": [
+      "Do not construct or dispatch QN Market.",
+      "Await AI Orchestrator/XDT1 resolution and a newly authorized Build Plan before any future construction evidence."
+    ]
+  },
+  "xdt5_handoff": null
+}
