@@ -1,0 +1,32 @@
+{
+  "schema_version": "0.1",
+  "relationships": [
+    {
+      "from": "AI Orchestrator",
+      "type": "requests_material_plan_from",
+      "to": "XDT1-MATERIAL",
+      "contract": "xdt.material-request.v0.1"
+    },
+    {
+      "from": "XDT1-MATERIAL",
+      "type": "returns_material_plan_to",
+      "to": "AI Orchestrator",
+      "contract": "xdt.material-plan.v0.1"
+    },
+    {
+      "from": "qncc",
+      "type": "consumes",
+      "to": "qncc.telemetry-ingest-contract"
+    },
+    {
+      "from": "location-scouting",
+      "type": "owns_and_consumes",
+      "to": "location-scout.scout-types"
+    },
+    {
+      "from": "qn-reel-drive-organizer",
+      "type": "owns_and_consumes",
+      "to": "qn-reel.organizer-models"
+    }
+  ]
+}
