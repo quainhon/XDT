@@ -1,0 +1,30 @@
+{
+  "schema_version": "0.1",
+  "request_id": "REQ-CANARY-QN-MARKET-001",
+  "mission_id": "CANARY-QN-MARKET-FLEET",
+  "requested_by": "AI Orchestrator",
+  "mission_summary": "Hypothetical QN Market fleet with multiple cooperating boats; validation only, no product build.",
+  "requested_capabilities": [
+    "shared marketplace entity exchange",
+    "cross-boat ownership declarations",
+    "location-aware listing references",
+    "media/reel references"
+  ],
+  "candidate_projects": [
+    "qncc",
+    "location-scouting",
+    "qn-reel-control"
+  ],
+  "evidence_refs": [
+    {
+      "repo": "quainhon/ai-orchestrator",
+      "path": "projects/registry.json",
+      "revision": "4f011cfff0f7560d88b283f5313af399a00d4359"
+    }
+  ],
+  "constraints": [
+    "Simulation only",
+    "Do not build QN Market",
+    "Do not assign downstream mutation authority"
+  ]
+}
