@@ -277,5 +277,107 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "authorization": {
+            "properties": {
+              "construction_authorized": {
+                "const": false
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution_route": {
+            "properties": {
+              "mode": {
+                "const": "refused"
+              }
+            }
+          },
+          "status": {
+            "const": "refused_unauthorized"
+          },
+          "xdt4_handoff": {
+            "properties": {
+              "ready": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "owner": {
+            "properties": {
+              "xdt3_is_target_owner": {
+                "const": false
+              }
+            }
+          },
+          "authorization": {
+            "properties": {
+              "construction_authorized": {
+                "const": true
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution_route": {
+            "properties": {
+              "mode": {
+                "enum": [
+                  "handoff_to_owner",
+                  "refused"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "execution_route": {
+            "properties": {
+              "mode": {
+                "const": "handoff_to_owner"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "execution_route": {
+            "properties": {
+              "delegate_to": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "owner": {
+            "properties": {
+              "xdt3_is_target_owner": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
 }
