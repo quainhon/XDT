@@ -1,0 +1,48 @@
+{
+  "schema_version": "0.1",
+  "commissioning_id": "no-pass",
+  "artifact": {
+    "artifact_id": "synth",
+    "build_id": "b",
+    "verification_id": "v",
+    "type": "bot_worker",
+    "owner": "SYNTHETIC"
+  },
+  "xdt4": {
+    "verdict": "FAIL",
+    "evidence_ref": "synthetic://qc/fail"
+  },
+  "authority": {
+    "authorized": true,
+    "permissions": [
+      "synthetic"
+    ],
+    "human_gates": []
+  },
+  "target": {
+    "environment": "synthetic"
+  },
+  "bindings": {
+    "registration_ref": "synthetic://r",
+    "routing_ref": "synthetic://route",
+    "rule_pack_ref": "synthetic://rules"
+  },
+  "launch_actions": [
+    {
+      "id": "register",
+      "status": "DONE",
+      "evidence_ref": "synthetic://a"
+    }
+  ],
+  "evidence": {
+    "activation_ref": "synthetic://a",
+    "connectivity_ref": "synthetic://c",
+    "routing_ref": "synthetic://r"
+  },
+  "blockers": [],
+  "escalations": [],
+  "provenance": {
+    "source_job_id": "XDT5-LAUNCH-BOOTSTRAP-V0-1-001",
+    "synthetic": true
+  }
+}
