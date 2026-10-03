@@ -1,0 +1,158 @@
+{
+  "schema_version": "0.1",
+  "plan_id": "PLAN-CANARY-QN-MARKET-001",
+  "request_id": "REQ-CANARY-QN-MARKET-001",
+  "status": "approved_with_unresolved",
+  "prepared_by": "XDT1-MATERIAL",
+  "reuse": [
+    {
+      "id": "location-scout.scout-types",
+      "owner": "TTQN5-LOCATION-SCOUT",
+      "source": {
+        "repo": "quainhon/location-scouting",
+        "path": "src/types/scout.ts",
+        "revision": "7ba933a8b4df5523f6560362e57f9440421c8617"
+      }
+    },
+    {
+      "id": "qn-reel.organizer-models",
+      "owner": "TTQN4-REEL-CONTROL",
+      "source": {
+        "repo": "quainhon/QN-Reel-drive-organizer",
+        "path": "qn_reel_organizer/models.py",
+        "revision": "71c972f4306ca460c68e9dcaa6fc27fd885f7052"
+      }
+    }
+  ],
+  "new_materials_required": [
+    {
+      "id": "qn-market.marketplace-core-contract",
+      "purpose": "Shared listing/product/offer identity across hypothetical boats.",
+      "ownership_status": "unknown"
+    },
+    {
+      "id": "qn-market.cross-boat-reference-contract",
+      "purpose": "Stable references between marketplace, location and media entities without copying downstream schemas.",
+      "ownership_status": "unknown"
+    }
+  ],
+  "canonical_contracts": [
+    {
+      "id": "xdt.material-request.v0.1",
+      "owner": "XDT1-MATERIAL",
+      "source": {
+        "repo": "quainhon/material",
+        "path": "schemas/material-request.schema.json",
+        "revision": "main"
+      }
+    },
+    {
+      "id": "xdt.material-plan.v0.1",
+      "owner": "XDT1-MATERIAL",
+      "source": {
+        "repo": "quainhon/material",
+        "path": "schemas/material-plan.schema.json",
+        "revision": "main"
+      }
+    }
+  ],
+  "ownership": [
+    {
+      "subject": "location-scout.scout-types",
+      "owner": "TTQN5-LOCATION-SCOUT",
+      "status": "known"
+    },
+    {
+      "subject": "qn-reel.organizer-models",
+      "owner": "TTQN4-REEL-CONTROL",
+      "status": "known"
+    },
+    {
+      "subject": "qn-market.marketplace-core-contract",
+      "owner": null,
+      "status": "unknown"
+    },
+    {
+      "subject": "qn-market.cross-boat-reference-contract",
+      "owner": null,
+      "status": "unknown"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "hypothetical-qn-market",
+      "type": "may_reference",
+      "to": "location-scout.scout-types"
+    },
+    {
+      "from": "hypothetical-qn-market",
+      "type": "may_reference",
+      "to": "qn-reel.organizer-models"
+    },
+    {
+      "from": "hypothetical-qn-market",
+      "type": "requires",
+      "to": "qn-market.marketplace-core-contract"
+    },
+    {
+      "from": "hypothetical-qn-market",
+      "type": "requires",
+      "to": "qn-market.cross-boat-reference-contract"
+    }
+  ],
+  "consumers": [
+    "hypothetical QN Market boats (not yet authorized or assigned)"
+  ],
+  "compatibility": [
+    {
+      "subject": "location-scout.scout-types",
+      "action": "Reference or adapt at an owning-unit boundary; do not mutate Location Scout schema to fit QN Market.",
+      "owner": "TTQN5-LOCATION-SCOUT"
+    },
+    {
+      "subject": "qn-reel.organizer-models",
+      "action": "Reference or adapt at an owning-unit boundary; do not mutate Reel Organizer models to fit QN Market.",
+      "owner": "TTQN4-REEL-CONTROL"
+    }
+  ],
+  "unresolved_decisions": [
+    {
+      "id": "UNRESOLVED-001",
+      "question": "Which future unit owns the marketplace core contract?",
+      "escalate_to": "AI Orchestrator / QN Master"
+    },
+    {
+      "id": "UNRESOLVED-002",
+      "question": "Which future unit owns cross-boat reference/adapters?",
+      "escalate_to": "AI Orchestrator / QN Master"
+    }
+  ],
+  "restrictions": [
+    "CANARY ONLY: does not authorize building QN Market.",
+    "Do not modify QNCC, Location Scout, Reel Control, or Reel Organizer contracts merely for compatibility.",
+    "Unknown ownership remains unresolved until Orchestrator assigns it.",
+    "Material Plan constrains materials; it does not grant worker authority."
+  ],
+  "evidence_refs": [
+    {
+      "repo": "quainhon/ai-orchestrator",
+      "path": "projects/registry.json",
+      "revision": "4f011cfff0f7560d88b283f5313af399a00d4359"
+    },
+    {
+      "repo": "quainhon/QNCC",
+      "path": "docs/QNCC_TELEMETRY_INGEST_CONTRACT.md",
+      "revision": "352120f054448d7ccf78f0d9a552ce0f89758dbe"
+    },
+    {
+      "repo": "quainhon/location-scouting",
+      "path": "src/types/scout.ts",
+      "revision": "7ba933a8b4df5523f6560362e57f9440421c8617"
+    },
+    {
+      "repo": "quainhon/QN-Reel-drive-organizer",
+      "path": "qn_reel_organizer/models.py",
+      "revision": "71c972f4306ca460c68e9dcaa6fc27fd885f7052"
+    }
+  ]
+}
