@@ -1,0 +1,343 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "xdt.build-plan.v0.1",
+  "title": "XDT2 Build Plan v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "build_plan_id",
+    "status",
+    "prepared_by",
+    "mission_identity",
+    "verified_inputs",
+    "architecture_summary",
+    "architectural_proposals",
+    "components",
+    "interfaces",
+    "data_control_flow",
+    "build_order",
+    "work_packages",
+    "acceptance_criteria",
+    "integration_points",
+    "risks",
+    "unresolved_decisions",
+    "escalation_requirements",
+    "authorization",
+    "restrictions",
+    "evidence_refs"
+  ],
+  "properties": {
+    "schema_version": { "const": "0.1" },
+    "build_plan_id": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": ["proposed", "blocked_pending_escalation", "ready_for_construction"]
+    },
+    "prepared_by": { "const": "XDT2-ARCHITECT" },
+    "mission_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mission_id", "name", "mode"],
+      "properties": {
+        "mission_id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "mode": { "enum": ["canary", "real"] }
+      }
+    },
+    "verified_inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule_pack", "material_plan"],
+      "properties": {
+        "rule_pack": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/evidenceRef" }
+        },
+        "material_plan": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["plan_id", "status", "source"],
+          "properties": {
+            "plan_id": { "type": "string", "minLength": 1 },
+            "status": {
+              "enum": ["approved", "approved_with_unresolved"]
+            },
+            "source": { "$ref": "#/definitions/evidenceRef" }
+          }
+        }
+      }
+    },
+    "architecture_summary": { "type": "string", "minLength": 1 },
+    "architectural_proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "proposal", "rationale", "classification"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "proposal": { "type": "string", "minLength": 1 },
+          "rationale": { "type": "string", "minLength": 1 },
+          "classification": { "const": "architectural_proposal" }
+        }
+      }
+    },
+    "components": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/component" }
+    },
+    "interfaces": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/interface" }
+    },
+    "data_control_flow": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/flow" }
+    },
+    "build_order": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "work_packages": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/workPackage" }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/acceptanceCriterion" }
+    },
+    "integration_points": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/integrationPoint" }
+    },
+    "risks": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/risk" }
+    },
+    "unresolved_decisions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/unresolvedDecision" }
+    },
+    "escalation_requirements": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/escalation" }
+    },
+    "authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["construction_authorized", "reason"],
+      "properties": {
+        "construction_authorized": { "type": "boolean" },
+        "reason": { "type": "string", "minLength": 1 }
+      }
+    },
+    "restrictions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/evidenceRef" }
+    }
+  },
+  "definitions": {
+    "evidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo", "path", "revision"],
+      "properties": {
+        "repo": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "revision": { "type": "string", "minLength": 1 }
+      }
+    },
+    "materialRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "owner_status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "owner_status": { "enum": ["known", "unknown", "conflict"] },
+        "owner": { "type": ["string", "null"] },
+        "source": {
+          "anyOf": [
+            { "$ref": "#/definitions/evidenceRef" },
+            { "type": "null" }
+          ]
+        }
+      }
+    },
+    "ownerAssignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "owner"],
+      "properties": {
+        "status": { "enum": ["known", "unresolved"] },
+        "owner": { "type": ["string", "null"] }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "component_id",
+        "name",
+        "responsibility",
+        "owned_scope",
+        "owner_assignment",
+        "dependencies",
+        "consumes_materials",
+        "boundary"
+      ],
+      "properties": {
+        "component_id": { "type": "string", "minLength": 1 },
+        "name": { "type": "string", "minLength": 1 },
+        "responsibility": { "type": "string", "minLength": 1 },
+        "owned_scope": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "owner_assignment": { "$ref": "#/definitions/ownerAssignment" },
+        "dependencies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "consumes_materials": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/materialRef" }
+        },
+        "boundary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "interface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["interface_id", "from", "to", "purpose", "contract_refs", "status"],
+      "properties": {
+        "interface_id": { "type": "string", "minLength": 1 },
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 },
+        "purpose": { "type": "string", "minLength": 1 },
+        "contract_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "status": { "enum": ["defined", "blocked_pending_contract", "external_reference"] }
+      }
+    },
+    "flow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["step", "from", "to", "action"],
+      "properties": {
+        "step": { "type": "integer", "minimum": 1 },
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 },
+        "action": { "type": "string", "minLength": 1 }
+      }
+    },
+    "workPackage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "work_package_id",
+        "component_id",
+        "mission_slice",
+        "rule_pack_refs",
+        "material_contract_refs",
+        "architecture_boundary",
+        "deliverables",
+        "acceptance_criteria_refs",
+        "status"
+      ],
+      "properties": {
+        "work_package_id": { "type": "string", "minLength": 1 },
+        "component_id": { "type": "string", "minLength": 1 },
+        "mission_slice": { "type": "string", "minLength": 1 },
+        "rule_pack_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "material_contract_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "architecture_boundary": { "type": "string", "minLength": 1 },
+        "deliverables": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "acceptance_criteria_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "status": { "enum": ["ready", "blocked_pending_escalation"] }
+      }
+    },
+    "acceptanceCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "criterion"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "criterion": { "type": "string", "minLength": 1 }
+      }
+    },
+    "integrationPoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "target", "contract_ref", "mutation_allowed"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "target": { "type": "string", "minLength": 1 },
+        "contract_ref": { "type": "string", "minLength": 1 },
+        "mutation_allowed": { "type": "boolean" }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "risk", "mitigation"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "risk": { "type": "string", "minLength": 1 },
+        "mitigation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "unresolvedDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "question", "source", "blocks", "escalate_to"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "question": { "type": "string", "minLength": 1 },
+        "source": { "type": "string", "minLength": 1 },
+        "blocks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "escalate_to": { "type": "string", "minLength": 1 }
+      }
+    },
+    "escalation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "reason", "path", "required_resolution"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "required_resolution": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}
