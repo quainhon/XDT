@@ -1,0 +1,60 @@
+{
+  "schema_version": "0.1",
+  "job_id": "XDT4-QUALITY-CONTROL-BOOTSTRAP-V0-1-001",
+  "result": "pass",
+  "checks": [
+    {
+      "id": "routing",
+      "result": "pass",
+      "evidence": "xdt-quality-control -> XDT4-QUALITY-CONTROL -> quainhon/XDT:xdt4-quality-control/ -> XDT_BUILD"
+    },
+    {
+      "id": "upstream-read-only",
+      "result": "pass",
+      "evidence": "XDT2 Build Plan and XDT3 records were read only; XDT4 writes are confined to xdt4-quality-control/."
+    },
+    {
+      "id": "unauthorized-fail-closed",
+      "result": "pass",
+      "evidence": "QN Market authorization=false and unresolved owner/contracts produce FAIL with xdt5_handoff=null."
+    },
+    {
+      "id": "criterion-level-proof",
+      "result": "pass",
+      "evidence": "Each criterion records required_evidence, evidence, and PROVEN/FAILED/UNPROVEN separately from overall verdict."
+    },
+    {
+      "id": "scope-ownership-fail-closed",
+      "result": "pass",
+      "evidence": "PASS schema requires resolved owner, authorized target, forbidden-scope proof, and scope result PROVEN."
+    },
+    {
+      "id": "corrective-not-repair",
+      "result": "pass",
+      "evidence": "FAIL/NEEDS_EVIDENCE require corrective_return and prohibit XDT5 handoff."
+    },
+    {
+      "id": "pass-handoff-gate",
+      "result": "pass",
+      "evidence": "PASS requires authorized existing evidence, all criteria PROVEN, scope checks PROVEN, corrective_return=null, and XDT5-ready handoff."
+    },
+    {
+      "id": "synthetic-pass",
+      "result": "pass",
+      "evidence": "QC-FIXTURE-PASS-001 independently proves all three inherited synthetic criteria and emits XDT5 handoff."
+    },
+    {
+      "id": "synthetic-incomplete",
+      "result": "pass",
+      "evidence": "QC-FIXTURE-INCOMPLETE-001 returns NEEDS_EVIDENCE with actionable missing proof and no XDT5 handoff."
+    },
+    {
+      "id": "protected-scopes-untouched",
+      "result": "pass",
+      "evidence": "Bootstrap mutations are only under xdt4-quality-control/; no XDT1/XDT2/XDT3/XDT5/downstream product file is changed."
+    }
+  ],
+  "limitations": [
+    "Bootstrap validates durable machine-readable QC contracts and static fixtures; it does not launch or repair any implementation."
+  ]
+}
