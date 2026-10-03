@@ -1,0 +1,84 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CONSTRUCTION-REFUSAL-QN-MARKET-001",
+  "build_plan": {
+    "build_plan_id": "BUILD-CANARY-QN-MARKET-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "xdt2-architect/plans/qn-market-canary.build-plan.json",
+    "source_revision": "b73721b4ec354848e8781ce98206f4655fb3ae4e",
+    "source_schema_version": "0.1"
+  },
+  "authorization": {
+    "construction_authorized": false,
+    "evidence": "XDT2 Build Plan authorization.construction_authorized=false; unresolved shared-contract ownership remains blocking."
+  },
+  "work_package_id": "ALL-QN-MARKET-WORK-PACKAGES",
+  "target": {
+    "project": "qn-market-canary",
+    "repository": "UNAUTHORIZED",
+    "path_scope": "NONE"
+  },
+  "owner": {
+    "authoritative_owner": "UNRESOLVED",
+    "xdt3_is_target_owner": false
+  },
+  "required_materials_contracts": [
+    "qn-market.marketplace-core-contract",
+    "qn-market.cross-boat-reference-contract"
+  ],
+  "dependencies": [
+    "XDT2 unresolved decisions UNRESOLVED-001 and UNRESOLVED-002"
+  ],
+  "prerequisite_gates": [
+    "construction authorization must be true",
+    "authoritative owner must be resolved",
+    "required shared contracts must be approved"
+  ],
+  "requested_outcome": "Refuse construction and product mutation for the QN Market canary.",
+  "permitted_mutation_scope": [
+    "quainhon/XDT:xdt3-construction/evidence/"
+  ],
+  "forbidden_scope": [
+    "QN Market product implementation",
+    "quainhon/location-scouting",
+    "quainhon/QN-Reel-drive-organizer",
+    "all downstream product repositories",
+    "xdt1-material/",
+    "xdt2-architect/",
+    "xdt4-quality-control/",
+    "xdt5-launch/"
+  ],
+  "execution_route": {
+    "mode": "refused",
+    "lane": "XDT_BUILD",
+    "delegate_to": null
+  },
+  "acceptance_criteria": [
+    "No QN Market construction dispatch occurs.",
+    "No downstream product mutation occurs.",
+    "Refusal evidence is retained inside XDT3 scope."
+  ],
+  "implementation_evidence": {
+    "claims_are_verification": false,
+    "commits": [],
+    "tests": [
+      "authorization=false -> refused before dispatch"
+    ],
+    "artifacts": [
+      "this refusal record"
+    ]
+  },
+  "status": "refused_unauthorized",
+  "blockers_escalations": [
+    "Resolve ownership and contracts through AI Orchestrator / QN Master -> XDT1 before any future construction authorization."
+  ],
+  "provenance": [
+    "XDT2 BUILD-CANARY-QN-MARKET-001",
+    "XDT3 bootstrap job XDT3-CONSTRUCTION-BOOTSTRAP-V0-1-001"
+  ],
+  "xdt4_handoff": {
+    "ready": false,
+    "verification_status": "not_verified",
+    "input_refs": []
+  }
+}
