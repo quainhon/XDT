@@ -26,7 +26,7 @@
     {
       "id": "cross-owner-handoff",
       "result": "pass",
-      "evidence": "execution_route supports handoff_to_owner; XDT3 ownership flag is explicit."
+      "evidence": "Machine-enforced schema forbids direct_in_owned_scope when authorized target owner is external; cross-owner fixture routes handoff_to_owner to SYNTHETIC-EXTERNAL-OWNER."
     },
     {
       "id": "evidence-not-verification",
@@ -47,6 +47,11 @@
       "id": "schema-shape",
       "result": "pass",
       "evidence": "Both proof records contain every required construction-record v0.1 field and enum/const values conform to the schema."
+    },
+    {
+      "id": "machine-enforced-gates",
+      "result": "pass",
+      "evidence": "Schema conditional rules force unauthorized records to refused_unauthorized + route=refused + XDT4 ready=false; authorized external-owner records cannot route direct_in_owned_scope; handoff requires non-empty delegate_to."
     }
   ],
   "limitations": [
