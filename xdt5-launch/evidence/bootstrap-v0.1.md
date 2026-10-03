@@ -14,3 +14,9 @@ Safety properties:
 - Validator is pure evaluation code; it contains no deployment/network mutation capability.
 
 Verification command: `node xdt5-launch/tests/commissioning.test.mjs`.
+
+## Executed verification
+
+Result: `XDT5 commissioning tests: 5/5 passed`.
+
+The executed checks covered XDT4 fail-closed, required human gate fail-closed, valid synthetic bot READY, missing launch authority blocked, and missing bot routing binding blocked.
