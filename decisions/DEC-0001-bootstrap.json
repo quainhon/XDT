@@ -1,0 +1,16 @@
+{
+  "id": "DEC-0001",
+  "status": "approved",
+  "owner": "XDT1-MATERIAL",
+  "decision": "Material v0.1 remains file-based; external downstream contracts are referenced by repo/path/revision and are never copied/redefined as XDT1-owned.",
+  "rationale": [
+    "quainhon/material was empty at bootstrap",
+    "Rule Keeper requires existing canonical artifacts to be reused",
+    "No evidence requires a database, service, UI, or parallel router"
+  ],
+  "restrictions": [
+    "Unknown/conflicting ownership is unresolved and escalated",
+    "Material Plans do not grant implementation authority",
+    "Downstream repositories are read-only to XDT1 unless separately delegated"
+  ]
+}
