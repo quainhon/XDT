@@ -1,0 +1,69 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CONSTRUCTION-FIXTURE-CROSS-OWNER-001",
+  "build_plan": {
+    "build_plan_id": "BUILD-FIXTURE-CROSS-OWNER-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "xdt3-construction/fixtures/cross-owner-handoff.fixture.json",
+    "source_revision": "synthetic-bootstrap-fixture",
+    "source_schema_version": "0.1"
+  },
+  "authorization": {
+    "construction_authorized": true,
+    "evidence": "Synthetic handoff-only fixture; authorization permits preparation of a handoff, not direct downstream mutation."
+  },
+  "work_package_id": "WP-FIXTURE-CROSS-OWNER-001",
+  "target": {
+    "project": "synthetic-external-owner",
+    "repository": "synthetic/owner-repo",
+    "path_scope": "owned/path/"
+  },
+  "owner": {
+    "authoritative_owner": "SYNTHETIC-EXTERNAL-OWNER",
+    "xdt3_is_target_owner": false
+  },
+  "required_materials_contracts": [
+    "xdt.construction-record.v0.1"
+  ],
+  "dependencies": [],
+  "prerequisite_gates": [
+    "synthetic fixture only"
+  ],
+  "requested_outcome": "Prove an authorized cross-owner work package becomes a bounded owner handoff instead of direct XDT3 mutation.",
+  "permitted_mutation_scope": [
+    "quainhon/XDT:xdt3-construction/fixtures/"
+  ],
+  "forbidden_scope": [
+    "synthetic/owner-repo:owned/path/",
+    "all real downstream product repositories"
+  ],
+  "execution_route": {
+    "mode": "handoff_to_owner",
+    "lane": "XDT_BUILD",
+    "delegate_to": "SYNTHETIC-EXTERNAL-OWNER"
+  },
+  "acceptance_criteria": [
+    "XDT3 does not directly mutate the target owner repository.",
+    "Delegation target equals authoritative owner."
+  ],
+  "implementation_evidence": {
+    "claims_are_verification": false,
+    "commits": [],
+    "tests": [
+      "cross-owner -> handoff_to_owner"
+    ],
+    "artifacts": [
+      "synthetic handoff fixture"
+    ]
+  },
+  "status": "handoff_ready",
+  "blockers_escalations": [],
+  "provenance": [
+    "XDT3 verification iteration for XDT3-CONSTRUCTION-BOOTSTRAP-V0-1-001"
+  ],
+  "xdt4_handoff": {
+    "ready": false,
+    "verification_status": "not_verified",
+    "input_refs": []
+  }
+}
