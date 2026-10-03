@@ -1,0 +1,421 @@
+{
+  "schema_version": "0.1",
+  "build_plan_id": "BUILD-CANARY-QN-MARKET-001",
+  "status": "blocked_pending_escalation",
+  "prepared_by": "XDT2-ARCHITECT",
+  "mission_identity": {
+    "mission_id": "CANARY-QN-MARKET-001",
+    "name": "Hypothetical QN Market architecture canary",
+    "mode": "canary"
+  },
+  "verified_inputs": {
+    "rule_pack": [
+      {
+        "repo": "quainhon/ai-orchestrator",
+        "path": "docs/RULE_KEEPER.md",
+        "revision": "ef066e7d5507a0bc30652c7a8f42509caddfe6ac"
+      },
+      {
+        "repo": "quainhon/ai-orchestrator",
+        "path": "docs/XDT_RULE.md",
+        "revision": "8210856d62cb48a67ef6f50d1d6cc87dade629f4"
+      },
+      {
+        "repo": "quainhon/ai-orchestrator",
+        "path": "projects/xdt-architect/project.json",
+        "revision": "e964e4bbd88dc27428be2f7c3a796a9cec2e3e93"
+      }
+    ],
+    "material_plan": {
+      "plan_id": "PLAN-CANARY-QN-MARKET-001",
+      "status": "approved_with_unresolved",
+      "source": {
+        "repo": "quainhon/XDT",
+        "path": "plans/qn-market-canary.plan.json",
+        "revision": "aa4d04407c7b5e45edd7a57ffba3b497e721da6d"
+      }
+    }
+  },
+  "architecture_summary": "Canary-only decomposition. Marketplace behavior is separated from a reference adapter so existing Location Scout and Reel Organizer contracts remain downstream-owned. Construction is intentionally blocked until AI Orchestrator and XDT1 resolve ownership and approval of the two required QN Market shared contracts.",
+  "architectural_proposals": [
+    {
+      "id": "ARCH-PROP-001",
+      "proposal": "Separate marketplace core behavior from cross-boat reference adaptation.",
+      "rationale": "Avoids copying or modifying downstream-owned schemas.",
+      "classification": "architectural_proposal"
+    },
+    {
+      "id": "ARCH-PROP-002",
+      "proposal": "Expose marketplace behavior through a narrow boundary over the marketplace core contract.",
+      "rationale": "Lets future builders implement scoped work packages without reinterpreting the full mission.",
+      "classification": "architectural_proposal"
+    }
+  ],
+  "components": [
+    {
+      "component_id": "qn-market-boundary",
+      "name": "QN Market Boundary",
+      "responsibility": "Expose marketplace-facing commands and queries over the approved core contract.",
+      "owned_scope": [
+        "marketplace command/query boundary",
+        "mapping to marketplace core identity"
+      ],
+      "owner_assignment": {
+        "status": "unresolved",
+        "owner": null
+      },
+      "dependencies": [
+        "qn-market-core"
+      ],
+      "consumes_materials": [
+        {
+          "id": "qn-market.marketplace-core-contract",
+          "owner_status": "unknown",
+          "owner": null,
+          "source": null
+        }
+      ],
+      "boundary": "Must not bind directly to Location Scout or Reel Organizer internals."
+    },
+    {
+      "component_id": "qn-market-core",
+      "name": "QN Market Core",
+      "responsibility": "Implement listing/product/offer behavior after the marketplace core contract is approved.",
+      "owned_scope": [
+        "marketplace core behavior",
+        "marketplace lifecycle behavior"
+      ],
+      "owner_assignment": {
+        "status": "unresolved",
+        "owner": null
+      },
+      "dependencies": [
+        "qn-market-reference-adapter"
+      ],
+      "consumes_materials": [
+        {
+          "id": "qn-market.marketplace-core-contract",
+          "owner_status": "unknown",
+          "owner": null,
+          "source": null
+        },
+        {
+          "id": "qn-market.cross-boat-reference-contract",
+          "owner_status": "unknown",
+          "owner": null,
+          "source": null
+        }
+      ],
+      "boundary": "May consume approved shared contracts but may not define or silently change them."
+    },
+    {
+      "component_id": "qn-market-reference-adapter",
+      "name": "QN Market Reference Adapter",
+      "responsibility": "Translate stable QN Market references to downstream-owned location and media references.",
+      "owned_scope": [
+        "cross-boat reference translation",
+        "compatibility boundary to approved downstream contracts"
+      ],
+      "owner_assignment": {
+        "status": "unresolved",
+        "owner": null
+      },
+      "dependencies": [],
+      "consumes_materials": [
+        {
+          "id": "qn-market.cross-boat-reference-contract",
+          "owner_status": "unknown",
+          "owner": null,
+          "source": null
+        },
+        {
+          "id": "location-scout.scout-types",
+          "owner_status": "known",
+          "owner": "TTQN5-LOCATION-SCOUT",
+          "source": {
+            "repo": "quainhon/location-scouting",
+            "path": "src/types/scout.ts",
+            "revision": "7ba933a8b4df5523f6560362e57f9440421c8617"
+          }
+        },
+        {
+          "id": "qn-reel.organizer-models",
+          "owner_status": "known",
+          "owner": "TTQN4-REEL-CONTROL",
+          "source": {
+            "repo": "quainhon/QN-Reel-drive-organizer",
+            "path": "qn_reel_organizer/models.py",
+            "revision": "71c972f4306ca460c68e9dcaa6fc27fd885f7052"
+          }
+        }
+      ],
+      "boundary": "References downstream contracts only; no authority to mutate their repositories or schemas."
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "IF-QNM-BOUNDARY-CORE",
+      "from": "qn-market-boundary",
+      "to": "qn-market-core",
+      "purpose": "Carry marketplace commands and queries.",
+      "contract_refs": [
+        "qn-market.marketplace-core-contract"
+      ],
+      "status": "blocked_pending_contract"
+    },
+    {
+      "interface_id": "IF-QNM-CORE-REF",
+      "from": "qn-market-core",
+      "to": "qn-market-reference-adapter",
+      "purpose": "Resolve stable external entity references.",
+      "contract_refs": [
+        "qn-market.cross-boat-reference-contract"
+      ],
+      "status": "blocked_pending_contract"
+    },
+    {
+      "interface_id": "IF-QNM-REF-LOCATION",
+      "from": "qn-market-reference-adapter",
+      "to": "TTQN5-LOCATION-SCOUT",
+      "purpose": "Reference approved Location Scout entity types.",
+      "contract_refs": [
+        "location-scout.scout-types"
+      ],
+      "status": "external_reference"
+    },
+    {
+      "interface_id": "IF-QNM-REF-MEDIA",
+      "from": "qn-market-reference-adapter",
+      "to": "TTQN4-REEL-CONTROL",
+      "purpose": "Reference approved Reel Organizer models.",
+      "contract_refs": [
+        "qn-reel.organizer-models"
+      ],
+      "status": "external_reference"
+    }
+  ],
+  "data_control_flow": [
+    {
+      "step": 1,
+      "from": "consumer",
+      "to": "qn-market-boundary",
+      "action": "Submit marketplace command/query."
+    },
+    {
+      "step": 2,
+      "from": "qn-market-boundary",
+      "to": "qn-market-core",
+      "action": "Map request to the approved marketplace core contract."
+    },
+    {
+      "step": 3,
+      "from": "qn-market-core",
+      "to": "qn-market-reference-adapter",
+      "action": "Resolve location/media references through the approved cross-boat contract."
+    },
+    {
+      "step": 4,
+      "from": "qn-market-reference-adapter",
+      "to": "downstream owning unit",
+      "action": "Use downstream-owned references without schema mutation."
+    }
+  ],
+  "build_order": [
+    "GATE-01 resolve owner and approve qn-market.marketplace-core-contract via XDT2 -> AI Orchestrator / QN Master -> XDT1 Material",
+    "GATE-02 resolve owner and approve qn-market.cross-boat-reference-contract via XDT2 -> AI Orchestrator / QN Master -> XDT1 Material",
+    "WP-QNM-REF-001",
+    "WP-QNM-CORE-001",
+    "WP-QNM-BOUNDARY-001",
+    "integration verification"
+  ],
+  "work_packages": [
+    {
+      "work_package_id": "WP-QNM-REF-001",
+      "component_id": "qn-market-reference-adapter",
+      "mission_slice": "Provide a stable compatibility boundary to existing location/media materials.",
+      "rule_pack_refs": [
+        "docs/RULE_KEEPER.md",
+        "docs/XDT_RULE.md#XDT2-ARCHITECT"
+      ],
+      "material_contract_refs": [
+        "qn-market.cross-boat-reference-contract",
+        "location-scout.scout-types",
+        "qn-reel.organizer-models"
+      ],
+      "architecture_boundary": "Adapter only; do not mutate downstream schemas or invent the unresolved shared contract.",
+      "deliverables": [
+        "adapter implementation after contract approval",
+        "compatibility tests",
+        "evidence downstream repos remain unchanged"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-QNM-001",
+        "AC-QNM-002",
+        "AC-QNM-005"
+      ],
+      "status": "blocked_pending_escalation"
+    },
+    {
+      "work_package_id": "WP-QNM-CORE-001",
+      "component_id": "qn-market-core",
+      "mission_slice": "Implement marketplace core behavior against approved shared contracts.",
+      "rule_pack_refs": [
+        "docs/RULE_KEEPER.md",
+        "docs/XDT_RULE.md#XDT2-ARCHITECT"
+      ],
+      "material_contract_refs": [
+        "qn-market.marketplace-core-contract",
+        "qn-market.cross-boat-reference-contract"
+      ],
+      "architecture_boundary": "Core behavior only; shared material definition remains outside the builder boundary.",
+      "deliverables": [
+        "core implementation after contract approval",
+        "core contract tests"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-QNM-001",
+        "AC-QNM-003",
+        "AC-QNM-005"
+      ],
+      "status": "blocked_pending_escalation"
+    },
+    {
+      "work_package_id": "WP-QNM-BOUNDARY-001",
+      "component_id": "qn-market-boundary",
+      "mission_slice": "Expose a narrow marketplace-facing boundary over approved core behavior.",
+      "rule_pack_refs": [
+        "docs/RULE_KEEPER.md",
+        "docs/XDT_RULE.md#XDT2-ARCHITECT"
+      ],
+      "material_contract_refs": [
+        "qn-market.marketplace-core-contract"
+      ],
+      "architecture_boundary": "Boundary maps only to the approved core contract and never directly to downstream internals.",
+      "deliverables": [
+        "boundary implementation after contract approval",
+        "boundary-to-core contract tests"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-QNM-001",
+        "AC-QNM-004",
+        "AC-QNM-005"
+      ],
+      "status": "blocked_pending_escalation"
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-QNM-001",
+      "criterion": "Every component stays within its architecture boundary and consumes only approved material/contract IDs."
+    },
+    {
+      "id": "AC-QNM-002",
+      "criterion": "The reference adapter does not copy, redefine, or mutate Location Scout or Reel Organizer contracts."
+    },
+    {
+      "id": "AC-QNM-003",
+      "criterion": "Marketplace core behavior is implemented only after both required QN Market shared contracts are approved."
+    },
+    {
+      "id": "AC-QNM-004",
+      "criterion": "The marketplace boundary depends on the core contract and not on downstream-owned internals."
+    },
+    {
+      "id": "AC-QNM-005",
+      "criterion": "No construction work begins while unresolved ownership/contract decisions remain blocking."
+    }
+  ],
+  "integration_points": [
+    {
+      "id": "INT-QNM-LOCATION",
+      "target": "TTQN5-LOCATION-SCOUT",
+      "contract_ref": "location-scout.scout-types",
+      "mutation_allowed": false
+    },
+    {
+      "id": "INT-QNM-MEDIA",
+      "target": "TTQN4-REEL-CONTROL",
+      "contract_ref": "qn-reel.organizer-models",
+      "mutation_allowed": false
+    }
+  ],
+  "risks": [
+    {
+      "id": "RISK-QNM-001",
+      "risk": "Assigning component ownership before Orchestrator resolves the two new shared contracts would invent authority.",
+      "mitigation": "Keep owner_assignment unresolved and construction blocked."
+    },
+    {
+      "id": "RISK-QNM-002",
+      "risk": "Directly importing downstream schemas into marketplace core would create cross-owner coupling.",
+      "mitigation": "Use the reference-adapter boundary and approved external contract IDs only."
+    }
+  ],
+  "unresolved_decisions": [
+    {
+      "id": "UNRESOLVED-001",
+      "question": "Which future unit owns qn-market.marketplace-core-contract?",
+      "source": "PLAN-CANARY-QN-MARKET-001",
+      "blocks": [
+        "qn-market-boundary",
+        "qn-market-core",
+        "WP-QNM-CORE-001",
+        "WP-QNM-BOUNDARY-001"
+      ],
+      "escalate_to": "AI Orchestrator / QN Master"
+    },
+    {
+      "id": "UNRESOLVED-002",
+      "question": "Which future unit owns qn-market.cross-boat-reference-contract?",
+      "source": "PLAN-CANARY-QN-MARKET-001",
+      "blocks": [
+        "qn-market-core",
+        "qn-market-reference-adapter",
+        "WP-QNM-REF-001",
+        "WP-QNM-CORE-001"
+      ],
+      "escalate_to": "AI Orchestrator / QN Master"
+    }
+  ],
+  "escalation_requirements": [
+    {
+      "id": "ESC-QNM-001",
+      "reason": "Marketplace core contract ownership is unknown.",
+      "path": "XDT2 -> AI Orchestrator / QN Master -> XDT1 Material",
+      "required_resolution": "Assign authoritative owner and obtain approved canonical contract before construction."
+    },
+    {
+      "id": "ESC-QNM-002",
+      "reason": "Cross-boat reference contract ownership is unknown.",
+      "path": "XDT2 -> AI Orchestrator / QN Master -> XDT1 Material",
+      "required_resolution": "Assign authoritative owner and obtain approved canonical contract before construction."
+    }
+  ],
+  "authorization": {
+    "construction_authorized": false,
+    "reason": "Canary only and the approved XDT1 Material Plan contains unresolved shared-contract ownership."
+  },
+  "restrictions": [
+    "CANARY ONLY: this Build Plan does not authorize building QN Market.",
+    "Do not redefine approved XDT1 materials or contracts.",
+    "Do not mutate QNCC, Location Scout, Reel Control, Reel Organizer, or other downstream product repositories.",
+    "Do not start XDT3 construction from this canary while authorization.construction_authorized is false."
+  ],
+  "evidence_refs": [
+    {
+      "repo": "quainhon/ai-orchestrator",
+      "path": "projects/registry.json",
+      "revision": "ac99e0de97f40811a346c371b78b83e5bb5f25f7"
+    },
+    {
+      "repo": "quainhon/ai-orchestrator",
+      "path": "docs/XDT_PIPELINE_DISPATCH_CONTRACT.md",
+      "revision": "52497d4df80d3616b687ebdfb331d30cd5748dc1"
+    },
+    {
+      "repo": "quainhon/XDT",
+      "path": "plans/qn-market-canary.plan.json",
+      "revision": "aa4d04407c7b5e45edd7a57ffba3b497e721da6d"
+    }
+  ]
+}
