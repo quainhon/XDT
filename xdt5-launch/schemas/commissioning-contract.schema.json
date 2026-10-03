@@ -1,0 +1,233 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "xdt5-launch/commissioning-contract/v0.1",
+  "title": "XDT5 Launch Commissioning Contract v0.1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "commissioning_id",
+    "artifact",
+    "xdt4",
+    "authority",
+    "target",
+    "launch_actions",
+    "evidence",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "commissioning_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact": {
+      "type": "object",
+      "required": [
+        "artifact_id",
+        "build_id",
+        "verification_id",
+        "type",
+        "owner"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string"
+        },
+        "build_id": {
+          "type": "string"
+        },
+        "verification_id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "bot_worker",
+            "service_backend",
+            "web_app",
+            "local_worker",
+            "other"
+          ]
+        },
+        "owner": {
+          "type": "string"
+        }
+      }
+    },
+    "xdt4": {
+      "type": "object",
+      "required": [
+        "verdict",
+        "evidence_ref"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "BLOCKED"
+          ]
+        },
+        "evidence_ref": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "required": [
+        "authorized",
+        "permissions",
+        "human_gates"
+      ],
+      "properties": {
+        "authorized": {
+          "type": "boolean"
+        },
+        "permissions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "human_gates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "required",
+              "approved"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "approved": {
+                "type": "boolean"
+              },
+              "evidence_ref": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "environment"
+      ],
+      "properties": {
+        "environment": {
+          "type": "string"
+        },
+        "endpoints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "bindings": {
+      "type": "object",
+      "properties": {
+        "registration_ref": {
+          "type": "string"
+        },
+        "routing_ref": {
+          "type": "string"
+        },
+        "rule_pack_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "launch_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "status"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "PENDING",
+              "DONE",
+              "FAILED"
+            ]
+          },
+          "evidence_ref": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "deployment_ref": {
+          "type": "string"
+        },
+        "activation_ref": {
+          "type": "string"
+        },
+        "health_ref": {
+          "type": "string"
+        },
+        "smoke_ref": {
+          "type": "string"
+        },
+        "connectivity_ref": {
+          "type": "string"
+        },
+        "routing_ref": {
+          "type": "string"
+        }
+      }
+    },
+    "rollback_ref": {
+      "type": "string"
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "escalations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "source_job_id",
+        "synthetic"
+      ],
+      "properties": {
+        "source_job_id": {
+          "type": "string"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}
