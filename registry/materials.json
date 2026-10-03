@@ -1,0 +1,96 @@
+{
+  "schema_version": "0.1",
+  "materials": [
+    {
+      "id": "qncc.telemetry-ingest-contract",
+      "kind": "contract",
+      "status": "existing_observed",
+      "owner": "TTQN3-QNCC",
+      "source": {
+        "repo": "quainhon/QNCC",
+        "path": "docs/QNCC_TELEMETRY_INGEST_CONTRACT.md",
+        "revision": "352120f054448d7ccf78f0d9a552ce0f89758dbe"
+      },
+      "consumers": [
+        "qncc"
+      ],
+      "notes": "Existing QNCC telemetry ingest contract; referenced, not redefined by XDT1."
+    },
+    {
+      "id": "location-scout.domain-schema",
+      "kind": "schema",
+      "status": "existing_observed",
+      "owner": "TTQN5-LOCATION-SCOUT",
+      "source": {
+        "repo": "quainhon/location-scouting",
+        "path": "database/schema.sql",
+        "revision": "08ba886910b84011fb7b854508d64b40e78f303b"
+      },
+      "consumers": [
+        "location-scouting"
+      ],
+      "notes": "Existing Location Scout persistence schema; downstream-owned."
+    },
+    {
+      "id": "location-scout.scout-types",
+      "kind": "entity_contract",
+      "status": "existing_observed",
+      "owner": "TTQN5-LOCATION-SCOUT",
+      "source": {
+        "repo": "quainhon/location-scouting",
+        "path": "src/types/scout.ts",
+        "revision": "7ba933a8b4df5523f6560362e57f9440421c8617"
+      },
+      "consumers": [
+        "location-scouting"
+      ],
+      "notes": "Existing typed domain entities; downstream-owned."
+    },
+    {
+      "id": "qn-reel.organizer-models",
+      "kind": "entity_contract",
+      "status": "existing_observed",
+      "owner": "TTQN4-REEL-CONTROL",
+      "source": {
+        "repo": "quainhon/QN-Reel-drive-organizer",
+        "path": "qn_reel_organizer/models.py",
+        "revision": "71c972f4306ca460c68e9dcaa6fc27fd885f7052"
+      },
+      "consumers": [
+        "qn-reel-drive-organizer"
+      ],
+      "notes": "Existing reel organizer domain models; downstream-owned."
+    },
+    {
+      "id": "xdt.material-request.v0.1",
+      "kind": "contract",
+      "status": "approved",
+      "owner": "XDT1-MATERIAL",
+      "source": {
+        "repo": "quainhon/material",
+        "path": "schemas/material-request.schema.json",
+        "revision": "main"
+      },
+      "consumers": [
+        "AI Orchestrator",
+        "XDT1-MATERIAL"
+      ]
+    },
+    {
+      "id": "xdt.material-plan.v0.1",
+      "kind": "contract",
+      "status": "approved",
+      "owner": "XDT1-MATERIAL",
+      "source": {
+        "repo": "quainhon/material",
+        "path": "schemas/material-plan.schema.json",
+        "revision": "main"
+      },
+      "consumers": [
+        "AI Orchestrator",
+        "XDT1-MATERIAL",
+        "future builders"
+      ]
+    }
+  ]
+}
