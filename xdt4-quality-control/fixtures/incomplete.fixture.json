@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.1",
+  "verification_id": "QC-FIXTURE-INCOMPLETE-001",
+  "build_plan_id": "BUILD-FIXTURE-XDT3-001",
+  "work_package_id": "WP-FIXTURE-XDT3-001",
+  "construction_evidence": {
+    "record_id": "CONSTRUCTION-FIXTURE-INCOMPLETE-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "synthetic/incomplete",
+    "source_revision": "synthetic",
+    "exists": true,
+    "authorized": true
+  },
+  "materials_contracts": [
+    {
+      "id": "xdt.construction-record",
+      "version": "0.1",
+      "proven": false
+    }
+  ],
+  "target": {
+    "repository": "quainhon/XDT",
+    "path_scope": "xdt3-construction/fixtures/"
+  },
+  "authoritative_owner": "XDT3-CONSTRUCTION",
+  "acceptance_criteria": [
+    {
+      "id": "AC-INCOMPLETE-001",
+      "criterion": "Required test evidence proves behavior.",
+      "required_evidence": [
+        "test result"
+      ],
+      "evidence": [],
+      "result": "UNPROVEN"
+    }
+  ],
+  "scope_ownership_checks": {
+    "owner_resolved": true,
+    "target_within_authorized_scope": true,
+    "forbidden_scope_untouched": false,
+    "result": "UNPROVEN"
+  },
+  "provenance": [
+    "synthetic incomplete XDT4 fixture"
+  ],
+  "verdict": "NEEDS_EVIDENCE",
+  "findings": [
+    "Required test proof is absent.",
+    "Forbidden-scope non-mutation is not proven.",
+    "Required contract proof is incomplete."
+  ],
+  "corrective_return": {
+    "to": "XDT3-CONSTRUCTION",
+    "required_actions": [
+      "Provide test result proving the criterion.",
+      "Provide evidence forbidden scopes remained untouched.",
+      "Provide proof of required construction-record contract."
+    ]
+  },
+  "xdt5_handoff": null
+}
