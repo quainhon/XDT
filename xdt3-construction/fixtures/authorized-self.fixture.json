@@ -1,0 +1,80 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CONSTRUCTION-FIXTURE-XDT3-001",
+  "build_plan": {
+    "build_plan_id": "BUILD-FIXTURE-XDT3-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "xdt3-construction/fixtures/authorized-self.fixture.json",
+    "source_revision": "synthetic-bootstrap-fixture",
+    "source_schema_version": "0.1"
+  },
+  "authorization": {
+    "construction_authorized": true,
+    "evidence": "Synthetic bootstrap fixture explicitly confined to XDT3-owned fixture scope; not authority for any downstream product."
+  },
+  "work_package_id": "WP-FIXTURE-XDT3-001",
+  "target": {
+    "project": "xdt-construction",
+    "repository": "quainhon/XDT",
+    "path_scope": "xdt3-construction/fixtures/"
+  },
+  "owner": {
+    "authoritative_owner": "XDT3-CONSTRUCTION",
+    "xdt3_is_target_owner": true
+  },
+  "required_materials_contracts": [
+    "xdt.build-plan.v0.1",
+    "xdt.construction-record.v0.1"
+  ],
+  "dependencies": [],
+  "prerequisite_gates": [
+    "synthetic fixture only",
+    "target remains inside xdt3-construction/"
+  ],
+  "requested_outcome": "Produce bounded synthetic construction evidence proving the authorized path without mutating a downstream project.",
+  "permitted_mutation_scope": [
+    "quainhon/XDT:xdt3-construction/fixtures/",
+    "quainhon/XDT:xdt3-construction/evidence/",
+    "quainhon/XDT:xdt3-construction/tests/"
+  ],
+  "forbidden_scope": [
+    "xdt1-material/",
+    "xdt2-architect/",
+    "xdt4-quality-control/",
+    "xdt5-launch/",
+    "all downstream product repositories"
+  ],
+  "execution_route": {
+    "mode": "direct_in_owned_scope",
+    "lane": "XDT_BUILD",
+    "delegate_to": null
+  },
+  "acceptance_criteria": [
+    "Authorization is true.",
+    "Mutation scope remains XDT3-owned.",
+    "Evidence is explicitly not XDT4 verification."
+  ],
+  "implementation_evidence": {
+    "claims_are_verification": false,
+    "commits": [],
+    "tests": [
+      "schema validation",
+      "scope boundary validation"
+    ],
+    "artifacts": [
+      "synthetic fixture record"
+    ]
+  },
+  "status": "evidence_ready_for_xdt4",
+  "blockers_escalations": [],
+  "provenance": [
+    "XDT3-CONSTRUCTION bootstrap job XDT3-CONSTRUCTION-BOOTSTRAP-V0-1-001"
+  ],
+  "xdt4_handoff": {
+    "ready": true,
+    "verification_status": "not_verified",
+    "input_refs": [
+      "CONSTRUCTION-FIXTURE-XDT3-001"
+    ]
+  }
+}
