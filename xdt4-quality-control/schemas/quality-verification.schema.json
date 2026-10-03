@@ -1,0 +1,346 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "xdt.quality-verification.v0.1",
+  "title": "XDT4 Quality Verification v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "verification_id",
+    "build_plan_id",
+    "work_package_id",
+    "construction_evidence",
+    "materials_contracts",
+    "target",
+    "authoritative_owner",
+    "acceptance_criteria",
+    "scope_ownership_checks",
+    "provenance",
+    "verdict",
+    "findings",
+    "corrective_return",
+    "xdt5_handoff"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1"
+    },
+    "verification_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "build_plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "work_package_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "construction_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "record_id",
+        "source_repo",
+        "source_path",
+        "source_revision",
+        "exists",
+        "authorized"
+      ],
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_repo": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "exists": {
+          "type": "boolean"
+        },
+        "authorized": {
+          "type": "boolean"
+        }
+      }
+    },
+    "materials_contracts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "version",
+          "proven"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "proven": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "path_scope"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "path_scope": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "authoritative_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "criterion",
+          "required_evidence",
+          "evidence",
+          "result"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "criterion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "result": {
+            "enum": [
+              "PROVEN",
+              "FAILED",
+              "UNPROVEN"
+            ]
+          }
+        }
+      }
+    },
+    "scope_ownership_checks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_resolved",
+        "target_within_authorized_scope",
+        "forbidden_scope_untouched",
+        "result"
+      ],
+      "properties": {
+        "owner_resolved": {
+          "type": "boolean"
+        },
+        "target_within_authorized_scope": {
+          "type": "boolean"
+        },
+        "forbidden_scope_untouched": {
+          "type": "boolean"
+        },
+        "result": {
+          "enum": [
+            "PROVEN",
+            "FAILED",
+            "UNPROVEN"
+          ]
+        }
+      }
+    },
+    "provenance": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "verdict": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NEEDS_EVIDENCE"
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "corrective_return": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "to": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required_actions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "to",
+        "required_actions"
+      ],
+      "additionalProperties": false
+    },
+    "xdt5_handoff": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "ready": {
+          "const": true
+        },
+        "successor_project": {
+          "const": "xdt-launch"
+        },
+        "input_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "ready",
+        "successor_project",
+        "input_refs"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "const": "PASS"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "construction_evidence": {
+            "properties": {
+              "exists": {
+                "const": true
+              },
+              "authorized": {
+                "const": true
+              }
+            }
+          },
+          "scope_ownership_checks": {
+            "properties": {
+              "result": {
+                "const": "PROVEN"
+              },
+              "owner_resolved": {
+                "const": true
+              },
+              "target_within_authorized_scope": {
+                "const": true
+              },
+              "forbidden_scope_untouched": {
+                "const": true
+              }
+            }
+          },
+          "acceptance_criteria": {
+            "items": {
+              "properties": {
+                "result": {
+                  "const": "PROVEN"
+                }
+              }
+            }
+          },
+          "corrective_return": {
+            "type": "null"
+          },
+          "xdt5_handoff": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "verdict": {
+            "enum": [
+              "FAIL",
+              "NEEDS_EVIDENCE"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "corrective_return": {
+            "type": "object"
+          },
+          "xdt5_handoff": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
+}
