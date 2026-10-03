@@ -1,0 +1,57 @@
+{
+  "schema_version": "0.1",
+  "commissioning_id": "synthetic-bot-001",
+  "artifact": {
+    "artifact_id": "synthetic-bot",
+    "build_id": "build-synth-001",
+    "verification_id": "qc-synth-001",
+    "type": "bot_worker",
+    "owner": "SYNTHETIC-OWNER"
+  },
+  "xdt4": {
+    "verdict": "PASS",
+    "evidence_ref": "synthetic://xdt4/pass"
+  },
+  "authority": {
+    "authorized": true,
+    "permissions": [
+      "synthetic-commission"
+    ],
+    "human_gates": []
+  },
+  "target": {
+    "environment": "synthetic-test",
+    "endpoints": [
+      "synthetic://worker"
+    ]
+  },
+  "bindings": {
+    "registration_ref": "synthetic://registry/bot",
+    "routing_ref": "synthetic://route/bot",
+    "rule_pack_ref": "synthetic://rules/bot"
+  },
+  "launch_actions": [
+    {
+      "id": "register",
+      "status": "DONE",
+      "evidence_ref": "synthetic://e/register"
+    },
+    {
+      "id": "activate",
+      "status": "DONE",
+      "evidence_ref": "synthetic://e/activate"
+    }
+  ],
+  "evidence": {
+    "activation_ref": "synthetic://e/activation",
+    "connectivity_ref": "synthetic://e/connectivity",
+    "routing_ref": "synthetic://e/routing"
+  },
+  "rollback_ref": "synthetic://disable/bot",
+  "blockers": [],
+  "escalations": [],
+  "provenance": {
+    "source_job_id": "XDT5-LAUNCH-BOOTSTRAP-V0-1-001",
+    "synthetic": true
+  }
+}
