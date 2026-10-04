@@ -1,0 +1,65 @@
+{
+  "schema_version": "0.1",
+  "commissioning_id": "COMMISSION-QN-FACTORY-CANARY-BOT-XDT5-001",
+  "artifact": {
+    "artifact_id": "QN-FACTORY-CANARY-BOT",
+    "build_id": "CONSTRUCTION-QN-FACTORY-CANARY-BOT-XDT3-001",
+    "verification_id": "QN-FACTORY-CANARY-BOT-XDT4-QUALITY-CONTROL-001",
+    "type": "bot_worker",
+    "owner": "XDT5-LAUNCH"
+  },
+  "xdt4": {
+    "verdict": "PASS",
+    "evidence_ref": "quainhon/XDT:xdt4-quality-control/evidence/qn-factory-canary-bot.verdict.json@abc9b594ccf001c594b855d56dc3f18f61bddad5"
+  },
+  "authority": {
+    "authorized": true,
+    "permissions": [
+      "commission verified repository artifact only",
+      "write XDT5-owned commissioning evidence"
+    ],
+    "human_gates": []
+  },
+  "target": {
+    "environment": "verified_repository_artifact",
+    "endpoints": [
+      "GET /health",
+      "POST /echo"
+    ]
+  },
+  "bindings": {
+    "registration_ref": "quainhon/ai-orchestrator:jobs/QN-FACTORY-CANARY-BOT-XDT5-LAUNCH-001/job.json",
+    "routing_ref": "XDT_BUILD:f079bc35-c211-40ba-b96d-8886843b251d",
+    "rule_pack_ref": "quainhon/ai-orchestrator:docs/XDT_RULE.md"
+  },
+  "launch_actions": [
+    {
+      "id": "preserve_verified_target_commit",
+      "status": "DONE",
+      "evidence_ref": "quainhon/qn-factory-canary-bot@2e8385b15d0b928c61b16e54e8ef5a0ebed951ee"
+    },
+    {
+      "id": "confirm_xdt4_pass",
+      "status": "DONE",
+      "evidence_ref": "QN-FACTORY-CANARY-BOT-XDT4-QUALITY-CONTROL-001:DONE:PASS:iteration-4"
+    },
+    {
+      "id": "commission_without_deployment",
+      "status": "DONE",
+      "evidence_ref": "jobs/QN-FACTORY-CANARY-BOT-XDT5-LAUNCH-001/task.md"
+    }
+  ],
+  "evidence": {
+    "activation_ref": "repository artifact commissioned at immutable target commit 2e8385b15d0b928c61b16e54e8ef5a0ebed951ee; deployment explicitly out of contract",
+    "connectivity_ref": "XDT4 runtime verification at target commit: local HTTP contract tests passed 5/5 without external services",
+    "routing_ref": "AI Orchestrator job routes XDT5 through XDT_BUILD lane f079bc35-c211-40ba-b96d-8886843b251d",
+    "health_ref": "XDT4 PASS verifies GET /health returns exact 200 JSON contract"
+  },
+  "rollback_ref": "Disable commissioning by authoritative lifecycle supersession; immutable verified repository commit remains unchanged.",
+  "blockers": [],
+  "escalations": [],
+  "provenance": {
+    "source_job_id": "QN-FACTORY-CANARY-BOT-XDT5-LAUNCH-001",
+    "synthetic": false
+  }
+}
