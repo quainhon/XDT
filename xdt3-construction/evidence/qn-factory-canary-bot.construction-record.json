@@ -1,0 +1,99 @@
+{
+  "schema_version": "0.1",
+  "record_id": "CONSTRUCTION-QN-FACTORY-CANARY-BOT-XDT3-001",
+  "build_plan": {
+    "build_plan_id": "BUILD-QN-FACTORY-CANARY-BOT-XDT2-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "xdt2-architect/plans/qn-factory-canary-bot.build-plan.json",
+    "source_revision": "9ce1d2d70bbd226971fdecfb1268665c64a95398",
+    "source_schema_version": "0.1"
+  },
+  "authorization": {
+    "construction_authorized": true,
+    "evidence": "Direct HUMAN provenance grants XDT3 scoped mutation authority for quainhon/qn-factory-canary-bot via registered XDT_BUILD lane (Đang Đóng Tàu)."
+  },
+  "work_package_id": "WP-CANARY-SERVICE-001+WP-CANARY-TESTS-001",
+  "target": {
+    "project": "qn-factory-canary-bot",
+    "repository": "quainhon/qn-factory-canary-bot",
+    "path_scope": "quainhon/qn-factory-canary-bot"
+  },
+  "owner": {
+    "authoritative_owner": "XDT3-CONSTRUCTION",
+    "xdt3_is_target_owner": true
+  },
+  "required_materials_contracts": [
+    "qn-factory-canary-bot.surface.v0.1",
+    "xdt.build-plan.v0.1",
+    "xdt.construction-record.v0.1"
+  ],
+  "dependencies": [],
+  "prerequisite_gates": [
+    "predecessor QN-FACTORY-CANARY-BOT-XDT2-ARCHITECT-001 verified DONE",
+    "direct HUMAN instruction authorizes canary build continuation"
+  ],
+  "requested_outcome": "Construct the minimal QN Factory Canary Bot HTTP service and automated tests matching GET /health and POST /echo contract.",
+  "permitted_mutation_scope": [
+    "quainhon/XDT:xdt3-construction/",
+    "quainhon/qn-factory-canary-bot"
+  ],
+  "forbidden_scope": [
+    "authentication",
+    "database",
+    "queue",
+    "scheduler",
+    "external integrations",
+    "business workflows",
+    "deployment behavior",
+    "extra endpoints",
+    "xdt1-material/",
+    "xdt2-architect/",
+    "xdt4-quality-control/",
+    "xdt5-launch/"
+  ],
+  "execution_route": {
+    "mode": "direct_in_owned_scope",
+    "lane": "XDT_BUILD",
+    "delegate_to": null
+  },
+  "acceptance_criteria": [
+    "GET /health returns HTTP 200 application/json {\"status\":\"ok\"}.",
+    "POST /echo returns HTTP 200 application/json preserving supplied message exactly.",
+    "POST /echo returns HTTP 400 on missing or non-string message.",
+    "All automated tests pass locally without external services.",
+    "No database, auth, queues, or unapproved endpoints."
+  ],
+  "implementation_evidence": {
+    "claims_are_verification": false,
+    "commits": [
+      "2e8385b15d0b928c61b16e54e8ef5a0ebed951ee"
+    ],
+    "tests": [
+      "test_01_get_health_returns_200_and_status_ok",
+      "test_02_post_echo_string_returns_200_exact_preservation",
+      "test_03_post_echo_missing_message_returns_400",
+      "test_04_post_echo_non_string_message_returns_400",
+      "test_05_unmatched_routes_return_404"
+    ],
+    "artifacts": [
+      "quainhon/qn-factory-canary-bot:app.py",
+      "quainhon/qn-factory-canary-bot:test_app.py",
+      "quainhon/qn-factory-canary-bot:README.md"
+    ]
+  },
+  "status": "evidence_ready_for_xdt4",
+  "blockers_escalations": [],
+  "provenance": [
+    "HUMAN instruction authorized XDT3 construction",
+    "XDT2 Build Plan BUILD-QN-FACTORY-CANARY-BOT-XDT2-001",
+    "Job QN-FACTORY-CANARY-BOT-XDT3-CONSTRUCTION-001"
+  ],
+  "xdt4_handoff": {
+    "ready": true,
+    "verification_status": "not_verified",
+    "input_refs": [
+      "CONSTRUCTION-QN-FACTORY-CANARY-BOT-XDT3-001",
+      "2e8385b15d0b928c61b16e54e8ef5a0ebed951ee"
+    ]
+  }
+}
