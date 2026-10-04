@@ -1,0 +1,346 @@
+{
+  "schema_version": "0.1",
+  "build_plan_id": "BUILD-QN-FACTORY-CANARY-BOT-XDT2-001",
+  "status": "blocked_pending_escalation",
+  "prepared_by": "XDT2-ARCHITECT",
+  "mission_identity": {
+    "mission_id": "QN-FACTORY-CANARY-BOT",
+    "name": "QN Factory Canary Bot",
+    "mode": "real"
+  },
+  "verified_inputs": {
+    "rule_pack": [
+      {
+        "repo": "quainhon/ai-orchestrator",
+        "path": "docs/XDT_RULE.md",
+        "revision": "8210856d62cb48a67ef6f50d1d6cc87dade629f4"
+      },
+      {
+        "repo": "quainhon/ai-orchestrator",
+        "path": "projects/xdt-architect/project.json",
+        "revision": "e964e4bbd88dc27428be2f7c3a796a9cec2e3e93"
+      },
+      {
+        "repo": "quainhon/ai-orchestrator",
+        "path": "projects/registry.json",
+        "revision": "a1620a9519bce898e40b233e790263e85700294f"
+      }
+    ],
+    "material_plan": {
+      "plan_id": "PLAN-QN-FACTORY-CANARY-BOT-XDT1-001",
+      "status": "approved_with_unresolved",
+      "source": {
+        "repo": "quainhon/XDT",
+        "path": "xdt1-material/plans/qn-factory-canary-bot.material-plan.json",
+        "revision": "50926672d23c5c7adf6e25fd4dc30606dd615d80"
+      }
+    }
+  },
+  "architecture_summary": "Build one minimal stateless HTTP service exposing exactly GET /health and POST /echo, plus a local automated-test suite covering the four XDT1-required cases. No persistence, authentication, queue, scheduler, external integration, business workflow, or deployment-specific behavior is part of this build. Construction remains blocked until AI Orchestrator assigns authoritative implementation ownership.",
+  "architectural_proposals": [
+    {
+      "id": "ARCH-CANARY-001",
+      "proposal": "Use one stateless HTTP service component for both health and echo endpoints.",
+      "rationale": "This is the smallest architecture that satisfies the approved XDT1 surface without introducing unnecessary internal services or dependencies.",
+      "classification": "architectural_proposal"
+    },
+    {
+      "id": "ARCH-CANARY-002",
+      "proposal": "Keep automated tests as a separate verification component/work package that runs locally with no credentials or external services.",
+      "rationale": "This makes the contract observable and independently verifiable while preserving the minimal product surface.",
+      "classification": "architectural_proposal"
+    }
+  ],
+  "components": [
+    {
+      "component_id": "canary-http-service",
+      "name": "Canary HTTP Service",
+      "responsibility": "Expose exactly GET /health and POST /echo according to qn-factory-canary-bot.surface.v0.1.",
+      "owned_scope": [
+        "GET /health",
+        "POST /echo",
+        "input validation for echo",
+        "JSON response formatting"
+      ],
+      "owner_assignment": {
+        "status": "unresolved",
+        "owner": null
+      },
+      "dependencies": [],
+      "consumes_materials": [
+        {
+          "id": "qn-factory-canary-bot.surface.v0.1",
+          "owner_status": "known",
+          "owner": "XDT1-MATERIAL",
+          "source": {
+            "repo": "quainhon/XDT",
+            "path": "xdt1-material/contracts/qn-factory-canary-bot.v0.1.json",
+            "revision": "234d6cc4efd6617be1e22cb4a6b62fb2279544d9"
+          }
+        }
+      ],
+      "boundary": "No persistence, authentication, queue, scheduler, external service, business workflow, or deployment-specific behavior. Do not add endpoints beyond /health and /echo."
+    },
+    {
+      "component_id": "canary-automated-tests",
+      "name": "Canary Automated Tests",
+      "responsibility": "Verify the exact XDT1 endpoint contract locally without credentials or external services.",
+      "owned_scope": [
+        "health success test",
+        "echo success test",
+        "echo missing-message error test",
+        "echo non-string-message error test"
+      ],
+      "owner_assignment": {
+        "status": "unresolved",
+        "owner": null
+      },
+      "dependencies": [
+        "canary-http-service"
+      ],
+      "consumes_materials": [
+        {
+          "id": "qn-factory-canary-bot.surface.v0.1",
+          "owner_status": "known",
+          "owner": "XDT1-MATERIAL",
+          "source": {
+            "repo": "quainhon/XDT",
+            "path": "xdt1-material/contracts/qn-factory-canary-bot.v0.1.json",
+            "revision": "234d6cc4efd6617be1e22cb4a6b62fb2279544d9"
+          }
+        }
+      ],
+      "boundary": "Tests verify only the approved health/echo contract and must not require network credentials or external services."
+    }
+  ],
+  "interfaces": [
+    {
+      "interface_id": "IF-CANARY-HEALTH",
+      "from": "HTTP client",
+      "to": "canary-http-service",
+      "purpose": "Health probe.",
+      "contract_refs": [
+        "qn-factory-canary-bot.surface.v0.1#contracts.health"
+      ],
+      "status": "defined"
+    },
+    {
+      "interface_id": "IF-CANARY-ECHO",
+      "from": "HTTP client",
+      "to": "canary-http-service",
+      "purpose": "Echo a supplied string or reject invalid message input.",
+      "contract_refs": [
+        "qn-factory-canary-bot.surface.v0.1#contracts.echo"
+      ],
+      "status": "defined"
+    },
+    {
+      "interface_id": "IF-CANARY-TESTS",
+      "from": "canary-automated-tests",
+      "to": "canary-http-service",
+      "purpose": "Exercise the approved HTTP contract locally.",
+      "contract_refs": [
+        "qn-factory-canary-bot.surface.v0.1#contracts.automated_tests"
+      ],
+      "status": "defined"
+    }
+  ],
+  "data_control_flow": [
+    {
+      "step": 1,
+      "from": "HTTP client",
+      "to": "canary-http-service",
+      "action": "GET /health returns exactly HTTP 200 application/json with {status: ok} and no side effects."
+    },
+    {
+      "step": 2,
+      "from": "HTTP client",
+      "to": "canary-http-service",
+      "action": "POST /echo with JSON string message returns HTTP 200 application/json preserving the message exactly."
+    },
+    {
+      "step": 3,
+      "from": "HTTP client",
+      "to": "canary-http-service",
+      "action": "POST /echo with missing or non-string message returns HTTP 400."
+    },
+    {
+      "step": 4,
+      "from": "canary-automated-tests",
+      "to": "canary-http-service",
+      "action": "Run all four required cases locally without network credentials or external services."
+    }
+  ],
+  "build_order": [
+    "GATE-OWNER-001 resolve authoritative implementation owner through AI Orchestrator / QN Master",
+    "WP-CANARY-SERVICE-001",
+    "WP-CANARY-TESTS-001",
+    "XDT4 contract verification"
+  ],
+  "work_packages": [
+    {
+      "work_package_id": "WP-CANARY-SERVICE-001",
+      "component_id": "canary-http-service",
+      "mission_slice": "Implement the complete approved product surface: GET /health and POST /echo only.",
+      "rule_pack_refs": [
+        "docs/XDT_RULE.md",
+        "projects/xdt-architect/project.json"
+      ],
+      "material_contract_refs": [
+        "qn-factory-canary-bot.surface.v0.1"
+      ],
+      "architecture_boundary": "One stateless HTTP service; no persistence, auth, queues, schedulers, external integrations, business workflows, deployment behavior, or extra endpoints.",
+      "deliverables": [
+        "GET /health implementation",
+        "POST /echo implementation with exact string preservation",
+        "400 validation for missing or non-string message"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-CANARY-001",
+        "AC-CANARY-002",
+        "AC-CANARY-003",
+        "AC-CANARY-004",
+        "AC-CANARY-005"
+      ],
+      "status": "blocked_pending_escalation"
+    },
+    {
+      "work_package_id": "WP-CANARY-TESTS-001",
+      "component_id": "canary-automated-tests",
+      "mission_slice": "Implement local automated tests for every case required by qn-factory-canary-bot.surface.v0.1.",
+      "rule_pack_refs": [
+        "docs/XDT_RULE.md",
+        "projects/xdt-architect/project.json"
+      ],
+      "material_contract_refs": [
+        "qn-factory-canary-bot.surface.v0.1"
+      ],
+      "architecture_boundary": "Local tests only; no network credentials, external services, or expansion of product scope.",
+      "deliverables": [
+        "GET /health exact-response test",
+        "POST /echo string round-trip test",
+        "POST /echo missing-message 400 test",
+        "POST /echo non-string-message 400 test"
+      ],
+      "acceptance_criteria_refs": [
+        "AC-CANARY-006",
+        "AC-CANARY-007",
+        "AC-CANARY-008",
+        "AC-CANARY-009",
+        "AC-CANARY-010"
+      ],
+      "status": "blocked_pending_escalation"
+    }
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "AC-CANARY-001",
+      "criterion": "GET /health returns HTTP 200."
+    },
+    {
+      "id": "AC-CANARY-002",
+      "criterion": "GET /health returns content-type application/json and exactly {\"status\":\"ok\"} semantically, with no additional product data."
+    },
+    {
+      "id": "AC-CANARY-003",
+      "criterion": "GET /health succeeds without external dependencies and has no side effects."
+    },
+    {
+      "id": "AC-CANARY-004",
+      "criterion": "POST /echo with JSON {\"message\":\"<string>\"} returns HTTP 200 application/json and preserves the supplied string exactly."
+    },
+    {
+      "id": "AC-CANARY-005",
+      "criterion": "POST /echo performs no persistence or external side effects."
+    },
+    {
+      "id": "AC-CANARY-006",
+      "criterion": "Automated test verifies GET /health returns 200 and exactly {status: ok}."
+    },
+    {
+      "id": "AC-CANARY-007",
+      "criterion": "Automated test verifies POST /echo with a string returns 200 and the same string."
+    },
+    {
+      "id": "AC-CANARY-008",
+      "criterion": "Automated test verifies POST /echo with missing message returns 400."
+    },
+    {
+      "id": "AC-CANARY-009",
+      "criterion": "Automated test verifies POST /echo with non-string message returns 400."
+    },
+    {
+      "id": "AC-CANARY-010",
+      "criterion": "All automated tests run locally without network credentials or external services."
+    }
+  ],
+  "integration_points": [],
+  "risks": [
+    {
+      "id": "RISK-CANARY-001",
+      "risk": "Assigning a builder before ownership is authoritatively resolved would invent implementation authority.",
+      "mitigation": "Keep both work packages blocked and construction authorization false until AI Orchestrator / QN Master resolves OWNER-001."
+    },
+    {
+      "id": "RISK-CANARY-002",
+      "risk": "Adding framework-driven convenience features could expand the canary beyond the approved surface.",
+      "mitigation": "Treat qn-factory-canary-bot.surface.v0.1 as the complete product contract and reject scope expansion without a new authoritative material review."
+    }
+  ],
+  "unresolved_decisions": [
+    {
+      "id": "OWNER-001",
+      "question": "Which registered downstream unit owns implementation and maintenance of quainhon/qn-factory-canary-bot?",
+      "source": "PLAN-QN-FACTORY-CANARY-BOT-XDT1-001",
+      "blocks": [
+        "canary-http-service",
+        "canary-automated-tests",
+        "WP-CANARY-SERVICE-001",
+        "WP-CANARY-TESTS-001"
+      ],
+      "escalate_to": "AI Orchestrator / QN Master"
+    }
+  ],
+  "escalation_requirements": [
+    {
+      "id": "ESC-CANARY-OWNER-001",
+      "reason": "The approved XDT1 contract explicitly leaves downstream implementation ownership unresolved.",
+      "path": "XDT2 -> AI Orchestrator / QN Master",
+      "required_resolution": "Assign a registered downstream implementation owner with mutation authority for quainhon/qn-factory-canary-bot before XDT3 Construction is activated."
+    }
+  ],
+  "authorization": {
+    "construction_authorized": false,
+    "reason": "XDT1 verified the material contract but implementation ownership remains unresolved. XDT2 cannot grant mutation authority or assign TTQN1 ownership."
+  },
+  "restrictions": [
+    "Do not assign TTQN1 ownership.",
+    "Do not implement product code in XDT2.",
+    "Do not mutate quainhon/qn-factory-canary-bot during XDT2.",
+    "Keep product scope limited to health, echo, and automated tests.",
+    "No authentication, database, queue, scheduler, external integrations, business workflows, or deployment-specific behavior.",
+    "Do not activate XDT3 until implementation mutation authority is authoritatively resolved."
+  ],
+  "evidence_refs": [
+    {
+      "repo": "quainhon/ai-orchestrator",
+      "path": "jobs/QN-FACTORY-CANARY-BOT-XDT1-MATERIAL-001/job.json",
+      "revision": "671a19055f26e8788e8a61f23713fc821cd2192f"
+    },
+    {
+      "repo": "quainhon/XDT",
+      "path": "xdt1-material/plans/qn-factory-canary-bot.material-plan.json",
+      "revision": "50926672d23c5c7adf6e25fd4dc30606dd615d80"
+    },
+    {
+      "repo": "quainhon/XDT",
+      "path": "xdt1-material/contracts/qn-factory-canary-bot.v0.1.json",
+      "revision": "234d6cc4efd6617be1e22cb4a6b62fb2279544d9"
+    },
+    {
+      "repo": "quainhon/qn-factory-canary-bot",
+      "path": "README.md",
+      "revision": "1aaff7d1367823691a073ee7a21eb24883ab6cb0"
+    }
+  ]
+}
