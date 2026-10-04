@@ -1,0 +1,118 @@
+{
+  "schema_version": "0.1",
+  "verification_id": "QC-QN-FACTORY-CANARY-BOT-XDT4-001",
+  "build_plan_id": "BUILD-QN-FACTORY-CANARY-BOT-XDT2-001",
+  "work_package_id": "WP-CANARY-SERVICE-001+WP-CANARY-TESTS-001",
+  "construction_evidence": {
+    "record_id": "CONSTRUCTION-QN-FACTORY-CANARY-BOT-XDT3-001",
+    "source_repo": "quainhon/XDT",
+    "source_path": "xdt3-construction/evidence/qn-factory-canary-bot.construction-record.json",
+    "source_revision": "6b4bd99a61e54434ee36ae41d797e8e82600d132",
+    "exists": true,
+    "authorized": true
+  },
+  "materials_contracts": [
+    {
+      "id": "qn-factory-canary-bot.surface.v0.1",
+      "version": "0.1",
+      "proven": true
+    },
+    {
+      "id": "xdt.build-plan",
+      "version": "0.1",
+      "proven": true
+    },
+    {
+      "id": "xdt.construction-record",
+      "version": "0.1",
+      "proven": true
+    }
+  ],
+  "target": {
+    "repository": "quainhon/qn-factory-canary-bot",
+    "path_scope": "quainhon/qn-factory-canary-bot"
+  },
+  "authoritative_owner": "XDT4-QUALITY-CONTROL",
+  "acceptance_criteria": [
+    {
+      "id": "AC-CANARY-001",
+      "criterion": "GET /health returns HTTP 200 application/json {\"status\":\"ok\"} without side effects or external dependencies.",
+      "required_evidence": [
+        "GET /health test and static code inspection"
+      ],
+      "evidence": [
+        "test_01_get_health_returns_200_and_status_ok PASSED",
+        "app.py returns 200 JSON {\"status\": \"ok\"}"
+      ],
+      "result": "PROVEN"
+    },
+    {
+      "id": "AC-CANARY-002",
+      "criterion": "POST /echo returns HTTP 200 application/json preserving supplied message exactly.",
+      "required_evidence": [
+        "POST /echo test with string and static code inspection"
+      ],
+      "evidence": [
+        "test_02_post_echo_string_returns_200_exact_preservation PASSED across multiple strings, unicode, and empty string"
+      ],
+      "result": "PROVEN"
+    },
+    {
+      "id": "AC-CANARY-003",
+      "criterion": "POST /echo returns HTTP 400 on missing message or non-string message.",
+      "required_evidence": [
+        "POST /echo validation tests"
+      ],
+      "evidence": [
+        "test_03_post_echo_missing_message_returns_400 PASSED",
+        "test_04_post_echo_non_string_message_returns_400 PASSED"
+      ],
+      "result": "PROVEN"
+    },
+    {
+      "id": "AC-CANARY-004",
+      "criterion": "All required automated tests run locally against target commit without external credentials or services.",
+      "required_evidence": [
+        "unittest runner output on local loopback"
+      ],
+      "evidence": [
+        "python -m unittest -v test_app.py ran 5 tests in 0.826s with 0 failures against commit 2e8385b15d0b928c61b16e54e8ef5a0ebed951ee"
+      ],
+      "result": "PROVEN"
+    },
+    {
+      "id": "AC-CANARY-005",
+      "criterion": "No database, authentication, queue, scheduler, external integration, business workflow, deployment behavior, or extra endpoints.",
+      "required_evidence": [
+        "source inspection and commit diff"
+      ],
+      "evidence": [
+        "app.py uses standard library only; test_05 verifies 404 on unmatched paths; commit 2e8385b contains zero persistence, auth, or queue code"
+      ],
+      "result": "PROVEN"
+    }
+  ],
+  "scope_ownership_checks": {
+    "owner_resolved": true,
+    "target_within_authorized_scope": true,
+    "forbidden_scope_untouched": true,
+    "result": "PROVEN"
+  },
+  "provenance": [
+    "XDT3 Construction Record CONSTRUCTION-QN-FACTORY-CANARY-BOT-XDT3-001",
+    "Direct HUMAN directive authorizing canary completion through XDT4 and XDT5",
+    "Independent test execution in XDT_BUILD lane against target commit 2e8385b15d0b928c61b16e54e8ef5a0ebed951ee"
+  ],
+  "verdict": "PASS",
+  "findings": [],
+  "corrective_return": null,
+  "xdt5_handoff": {
+    "ready": true,
+    "successor_project": "xdt-launch",
+    "input_refs": [
+      "QC-QN-FACTORY-CANARY-BOT-XDT4-001",
+      "CONSTRUCTION-QN-FACTORY-CANARY-BOT-XDT3-001",
+      "2e8385b15d0b928c61b16e54e8ef5a0ebed951ee"
+    ]
+  }
+}
