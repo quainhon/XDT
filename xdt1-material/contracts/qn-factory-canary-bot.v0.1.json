@@ -1,0 +1,92 @@
+{
+  "schema_version": "0.1",
+  "contract_id": "qn-factory-canary-bot.surface.v0.1",
+  "status": "approved_material",
+  "prepared_by": "XDT1-MATERIAL",
+  "implementation_owner": null,
+  "ownership_status": "unknown",
+  "scope": {
+    "allowed": [
+      "health",
+      "echo",
+      "automated tests"
+    ],
+    "excluded": [
+      "authentication",
+      "database",
+      "queue",
+      "scheduler",
+      "external integrations",
+      "business workflows",
+      "deployment-specific behavior"
+    ]
+  },
+  "contracts": {
+    "health": {
+      "method": "GET",
+      "path": "/health",
+      "request_body": "none",
+      "success": {
+        "status": 200,
+        "content_type": "application/json",
+        "body": {
+          "status": "ok"
+        }
+      },
+      "invariants": [
+        "No side effects",
+        "No external dependency required for success"
+      ]
+    },
+    "echo": {
+      "method": "POST",
+      "path": "/echo",
+      "request": {
+        "content_type": "application/json",
+        "body": {
+          "message": "string"
+        }
+      },
+      "success": {
+        "status": 200,
+        "content_type": "application/json",
+        "body": {
+          "message": "same string supplied in request"
+        }
+      },
+      "errors": [
+        {
+          "condition": "missing or non-string message",
+          "status": 400
+        }
+      ],
+      "invariants": [
+        "Response preserves message exactly",
+        "No persistence",
+        "No external side effects"
+      ]
+    },
+    "automated_tests": {
+      "required_cases": [
+        "GET /health returns 200 and exactly {status: ok}",
+        "POST /echo with a string returns 200 and the same string",
+        "POST /echo with missing message returns 400",
+        "POST /echo with non-string message returns 400"
+      ],
+      "requirement": "Tests run locally without network credentials or external services."
+    }
+  },
+  "dependencies": [],
+  "unresolved_decisions": [
+    {
+      "id": "OWNER-001",
+      "question": "Which registered downstream unit owns implementation and maintenance of quainhon/qn-factory-canary-bot?",
+      "escalate_to": "AI Orchestrator / QN Master"
+    }
+  ],
+  "restrictions": [
+    "Material only; grants no mutation authority.",
+    "Do not assign TTQN1 ownership by inference.",
+    "Do not expand beyond health, echo, and automated tests without a new authoritative mission/material review."
+  ]
+}
