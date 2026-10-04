@@ -1,0 +1,94 @@
+{
+  "schema_version": "0.1",
+  "plan_id": "PLAN-QN-FACTORY-CANARY-BOT-XDT1-001",
+  "request_id": "QN-FACTORY-CANARY-BOT-XDT1-MATERIAL-001",
+  "status": "approved_with_unresolved",
+  "prepared_by": "XDT1-MATERIAL",
+  "reuse": [],
+  "new_materials_required": [
+    {
+      "id": "qn-factory-canary-bot.surface.v0.1",
+      "purpose": "Minimum observable HTTP surface and automated-test expectations for the first real factory canary bot.",
+      "ownership_status": "unknown"
+    }
+  ],
+  "canonical_contracts": [
+    {
+      "id": "qn-factory-canary-bot.surface.v0.1",
+      "owner": "XDT1-MATERIAL",
+      "source": {
+        "repo": "quainhon/XDT",
+        "path": "xdt1-material/contracts/qn-factory-canary-bot.v0.1.json",
+        "revision": "2cd8b77c0eec2c95be0e6cc955b91458bb48cbea"
+      }
+    }
+  ],
+  "ownership": [
+    {
+      "subject": "qn-factory-canary-bot.surface.v0.1 material governance",
+      "owner": "XDT1-MATERIAL",
+      "status": "known"
+    },
+    {
+      "subject": "quainhon/qn-factory-canary-bot implementation",
+      "owner": null,
+      "status": "unknown"
+    }
+  ],
+  "relationships": [
+    {
+      "from": "quainhon/qn-factory-canary-bot",
+      "type": "must_conform_to",
+      "to": "qn-factory-canary-bot.surface.v0.1"
+    },
+    {
+      "from": "XDT2-ARCHITECT",
+      "type": "must_consume",
+      "to": "qn-factory-canary-bot.surface.v0.1"
+    }
+  ],
+  "consumers": [
+    "XDT2-ARCHITECT",
+    "future authorized implementation owner",
+    "XDT4-QUALITY-CONTROL"
+  ],
+  "compatibility": [
+    {
+      "subject": "quainhon/qn-factory-canary-bot",
+      "action": "Repository contains README only; no legacy product contract requires compatibility migration.",
+      "owner": null
+    }
+  ],
+  "unresolved_decisions": [
+    {
+      "id": "OWNER-001",
+      "question": "Which registered downstream unit owns implementation and maintenance of quainhon/qn-factory-canary-bot?",
+      "escalate_to": "AI Orchestrator / QN Master"
+    }
+  ],
+  "restrictions": [
+    "Target repository is read-only during XDT1.",
+    "Do not assign TTQN1 ownership.",
+    "Do not implement product code.",
+    "Keep product surface limited to health, echo, and automated tests.",
+    "No database, authentication, queue, scheduler, external integration, or business workflow is required.",
+    "Material Plan constrains required materials; it does not grant downstream mutation authority."
+  ],
+  "evidence_refs": [
+    {
+      "repo": "quainhon/ai-orchestrator",
+      "path": "jobs/QN-FACTORY-CANARY-BOT-XDT1-MATERIAL-001/job.json",
+      "revision": "a66b0837b217d1483feec8e261478a056db30f76"
+    },
+    {
+      "repo": "quainhon/XDT",
+      "path": "xdt1-material/contracts/qn-factory-canary-bot.v0.1.json",
+      "revision": "2cd8b77c0eec2c95be0e6cc955b91458bb48cbea"
+    },
+    {
+      "repo": "quainhon/qn-factory-canary-bot",
+      "path": "README.md",
+      "revision": "1aaff7d1367823691a073ee7a21eb24883ab6cb0"
+    }
+  ]
+}
