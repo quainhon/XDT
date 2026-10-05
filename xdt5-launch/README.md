@@ -1,6 +1,8 @@
-# XDT5 Launch v0.1
+# XDT5 Launch v0.1 (RETIRED ARCHIVE)
 
-XDT5 owns launch/commissioning contracts, evidence, and launch-state decisions only.
+> **RETIREMENT NOTICE:** Per trusted human directive, XDT5 Launch is retired from the active standard workflow. The active XDT build workflow is four stages (XDT1-XDT4) with XDT4 Quality Control as the terminal stage. This directory is preserved strictly as a read-only historical archive. See `RETIRED.md` for details.
+
+XDT5 previously owned launch/commissioning contracts, evidence, and launch-state decisions only.
 
 Pipeline:
 

@@ -18,12 +18,14 @@
     "provenance",
     "verdict",
     "findings",
-    "corrective_return",
-    "xdt5_handoff"
+    "corrective_return"
   ],
   "properties": {
     "schema_version": {
-      "const": "0.1"
+      "enum": [
+        "0.1",
+        "0.2"
+      ]
     },
     "verification_id": {
       "type": "string",
@@ -263,9 +265,41 @@
         "input_refs"
       ],
       "additionalProperties": false
+    },
+    "pipeline_completion": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "status": {
+          "const": "CHAIN_COMPLETE"
+        },
+        "terminal_stage": {
+          "const": "xdt-quality-control"
+        },
+        "successor_project": {
+          "type": "null"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "0.1"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "xdt5_handoff"
+        ]
+      }
+    },
     {
       "if": {
         "properties": {
@@ -313,7 +347,23 @@
           },
           "corrective_return": {
             "type": "null"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "0.1"
           },
+          "verdict": {
+            "const": "PASS"
+          }
+        }
+      },
+      "then": {
+        "properties": {
           "xdt5_handoff": {
             "type": "object"
           }
